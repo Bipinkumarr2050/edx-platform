@@ -5,6 +5,7 @@ from bok_choy.javascript import js_defined
 from bok_choy.promise import EmptyPromise
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.support.ui import WebDriverWait
 
 from common.test.acceptance.pages.common.utils import click_css, sync_on_notification
 
@@ -287,8 +288,9 @@ class HelpMixin(object):
             element_css = NAV_HELP_CSS
         else:
             element_css = NAV_HELP_NOT_SIGNED_IN_CSS
-
+        num_windows = len(self.browser.window_handles)
         self.q(css=element_css).first.click()
+        WebDriverWait(self.browser, 10).until(lambda driver: len(driver.window_handles) > num_windows)
         return self.q(css=element_css).results[0]
 
     def get_side_bar_help_element_and_click_help(self, as_list_item=False, index=-1):
