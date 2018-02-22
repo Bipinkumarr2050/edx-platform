@@ -780,7 +780,8 @@ def student_dashboard(request):
             'resume_buttons_are_available': True,
             'resume_button_urls': resume_button_urls 
         })
-    except UnavailableCompletionData:
+    except (UnavailableCompletionData, RuntimeError):
+        # We throw a Runtime error when the completion waffle flag is on.
         context.update({ 'resume_buttons_are_available': False })
 
 
