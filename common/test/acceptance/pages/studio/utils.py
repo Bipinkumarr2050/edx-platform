@@ -288,10 +288,14 @@ class HelpMixin(object):
             element_css = NAV_HELP_CSS
         else:
             element_css = NAV_HELP_NOT_SIGNED_IN_CSS
+
         num_windows = len(self.browser.window_handles)
-        self.q(css=element_css).first.click()
-        WebDriverWait(self.browser, 10).until(lambda driver: len(driver.window_handles) > num_windows)
-        return self.q(css=element_css).results[0]
+        help_element = self.q(css=element_css).results[0]
+        help_element.click()
+        WebDriverWait(self.browser, 10).until(
+            lambda driver: len(driver.window_handles) > num_windows
+        )
+        return help_element
 
     def get_side_bar_help_element_and_click_help(self, as_list_item=False, index=-1):
         """
@@ -314,6 +318,10 @@ class HelpMixin(object):
         else:
             element_css = SIDE_BAR_HELP_CSS
 
+        num_windows = len(self.browser.window_handles)
         help_element = self.q(css=element_css).results[index]
         help_element.click()
+        WebDriverWait(self.browser, 10).until(
+            lambda driver: len(driver.window_handles) > num_windows
+        )
         return help_element
